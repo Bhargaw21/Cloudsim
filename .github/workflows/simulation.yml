@@ -1,0 +1,27 @@
+name: Run Auto-Scaling Simulation
+
+on: [push]
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Maven
+      uses: s4u/setup-maven-action@v1.7.0
+      with:
+        maven-version: '3.8.6'
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Run Simulation
+      run: mvn exec:java -Dexec.mainClass="com.cloudproject.autoscaler.AutoScalerSimulation"
